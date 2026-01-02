@@ -40,8 +40,7 @@ def get_random_star_alliance_flight(include_ground=True):
             'altitude_ft': int(flight['altitude'] * 3.28084),
             'speed_kts': int(flight['speed'] * 1.94384),
             'trackers': [
-                f"https://globe.adsb.fi/?icao={flight['icao24']}",
-                f"https://www.flightradar24.com/data/aircraft/{flight['icao24']}"
+                f"Voir le vol en direct : https://globe.adsb.fi/?icao={flight['icao24']}",
             ]
         }
     return None
@@ -52,10 +51,10 @@ def print_flight(flight):
         return
     
     print(f"\n✈️  VOL {flight['callsign']} {flight['status']}")
+    print(f"\n Généré par OpenSky Network - https://opensky-network.org/")
     print(f"   📍 {flight['position']}")
     print(f"   🏔️  {flight['altitude_ft']} ft | ⚡ {flight['speed_kts']} kts")
     print("   🔗", flight['trackers'][0])
-    print("   🔗", flight['trackers'][1])
 
 # LANCEMENT
 if __name__ == "__main__":
