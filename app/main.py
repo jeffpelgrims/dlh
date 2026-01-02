@@ -2,8 +2,8 @@
 import requests
 import random
 
-def get_random_lufthansa_flight(include_ground=True):
-    """Lufthansa flights LIVE - OpenSky uniquement (AUCUN RATE LIMIT)"""
+def get_random_star_alliance_flight(include_ground=True):
+    """Star Alliance flights LIVE - OpenSky uniquement (AUCUN RATE LIMIT)"""
     # Focus Europe (où Lufthansa vole le plus)
     # params = {
     #    'lamin': 35, 'lomin': -10,  # Europe Sud-Ouest
@@ -13,14 +13,14 @@ def get_random_lufthansa_flight(include_ground=True):
     resp = requests.get("https://opensky-network.org/api/states/all", """params=params""")
     states = resp.json()['states']
     
-    # TOUS les vols Lufthansa détectés
-    dlh_flights = []
+    # TOUS les vols Star Alliance détectés
+    star_flights = []
     for state in states:
         callsign = state[1]
-        if callsign and callsign.startswith(('DLH', 'LHG', 'BRU', 'AEE', 'ACA', 'CCA', 'AIC', 'ANZ', 'ANA', 'AAR', 'AUA', 'AVA', 'TPU', 'CMP', 'CTN', 'MSR', 'ETH', 'EVA', 'LOT', 'CSZ', 'SIN', 'SAA', 'SWR', 'TAP', 'THA', 'THY', 'UAL')):  # DLH + sector callsigns
+        if callsign and callsign.startswith(('DLH', 'LHG', 'BEL', 'AEE', 'ACA', 'CCA', 'AIC', 'ANZ', 'ANA', 'AAR', 'AUA', 'AVA', 'TPU', 'CMP', 'CTN', 'MSR', 'ETH', 'EVA', 'LOT', 'CSZ', 'SIN', 'SAA', 'SWR', 'TAP', 'THA', 'THY', 'UAL')):  # DLH + sector callsigns
             onground = bool(state[8])
             if include_ground or not onground:
-                dlh_flights.append({
+                star_flights.append({
                     'callsign': callsign.strip(),
                     'icao24': state[0],
                     'lat': state[6],
@@ -31,8 +31,8 @@ def get_random_lufthansa_flight(include_ground=True):
                     'status': "🛬 AU SOL" if onground else "✈️ EN VOL"
                 })
     
-    if dlh_flights:
-        flight = random.choice(dlh_flights)
+    if star_flights:
+        flight = random.choice(star_flights)
         return {
             'callsign': flight['callsign'],  # DLH463 ou DLH8HP
             'status': flight['status'],
@@ -59,8 +59,8 @@ def print_flight(flight):
 
 # LANCEMENT
 if __name__ == "__main__":
-    print("🔍 Recherche vols Lufthansa...\n")
+    print("🔍 Recherche vols Star Alliance...\n")
     
     # Test au sol
-    flight2 = get_random_lufthansa_flight(include_ground=True)
+    flight2 = get_random_star_alliance_flight(include_ground=True)
     print_flight(flight2)
