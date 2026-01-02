@@ -5,19 +5,19 @@ import random
 def get_random_lufthansa_flight(include_ground=True):
     """Lufthansa flights LIVE - OpenSky uniquement (AUCUN RATE LIMIT)"""
     # Focus Europe (où Lufthansa vole le plus)
-    params = {
-        'lamin': 35, 'lomin': -10,  # Europe Sud-Ouest
-        'lamax': 60, 'lomax': 25    # Europe Nord-Est
-    }
+    # params = {
+    #    'lamin': 35, 'lomin': -10,  # Europe Sud-Ouest
+    #    'lamax': 60, 'lomax': 25    # Europe Nord-Est
+    # }
     
-    resp = requests.get("https://opensky-network.org/api/states/all", params=params)
+    resp = requests.get("https://opensky-network.org/api/states/all", """params=params""")
     states = resp.json()['states']
     
     # TOUS les vols Lufthansa détectés
     dlh_flights = []
     for state in states:
         callsign = state[1]
-        if callsign and callsign.startswith(('DLH', 'LHG')):  # DLH + sector callsigns
+        if callsign and callsign.startswith(('DLH', 'LHG', 'BRU', 'AEE', 'ACA', 'CCA', 'AIC', 'ANZ', 'ANA', 'AAR', 'AUA', 'AVA', 'TPU', 'CMP', 'CTN', 'MSR', 'ETH', 'EVA', 'LOT', 'CSZ', 'SIN', 'SAA', 'SWR', 'TAP', 'THA', 'THY', 'UAL')):  # DLH + sector callsigns
             onground = bool(state[8])
             if include_ground or not onground:
                 dlh_flights.append({
@@ -51,7 +51,7 @@ def print_flight(flight):
         print("❌ Aucun vol Lufthansa détecté (essaie plus tard)")
         return
     
-    print(f"\n✈️  LUFTHANSA {flight['callsign']} {flight['status']}")
+    print(f"\n✈️  VOL {flight['callsign']} {flight['status']}")
     print(f"   📍 {flight['position']}")
     print(f"   🏔️  {flight['altitude_ft']} ft | ⚡ {flight['speed_kts']} kts")
     print("   🔗", flight['trackers'][0])
